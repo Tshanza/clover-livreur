@@ -20,7 +20,20 @@
     <ion-refresher-content refreshingSpinner="lenes"></ion-refresher-content>
   </ion-refresher>
 
-  <ion-list lines="full">
+  <ion-virtual-scroll [items]="dataSource.filteredData">
+    <ion-item *virtualItem="let client; let itemBounds = bounds;" button (click)="onSelected(client._id)">
+      <ion-label>
+
+        <h2>{{ client.ets }}</h2>
+        <h3>Code : {{ client.code }}</h3>
+        <p>Zone {{ client.zone }} / Q. {{ client.quartier }} / Av. {{ client.avenue }}</p>
+        <p>Gerant : {{ client.gerant }} - Contact : {{ client.contact }}</p>
+        
+      </ion-label>
+    </ion-item>
+  </ion-virtual-scroll>
+
+  <!-- <ion-list lines="full">
     <ion-item button (click)="onSelected(client._id)" *ngFor="let client of dataSource.filteredData">
       <ion-label>
 
@@ -33,7 +46,7 @@
       
     </ion-item>
     
-  </ion-list>
+  </ion-list> -->
 
 </ion-content>
 
