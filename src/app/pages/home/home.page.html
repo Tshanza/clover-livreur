@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="end">
+      <ion-button (click)="onSignOut()">
+        <ion-icon name="log-out-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Acceuil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="onStart()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-item>
+    <ion-label>Considerer la date du </ion-label>
+    <ion-datetime (ionChange)="onGetDate($event)" placeholder="Select Date"></ion-datetime>
+  </ion-item>
+
+  <ion-card>
+    <ion-item lines="full">
+      <ion-label>TOTAL VENDU</ion-label>
+      <ion-spinner *ngIf="!totalSale.length" name="lines" slot="end"></ion-spinner>
+    </ion-item>
+
+    <div  *ngFor="let item of totalSale">
+      <ion-item *ngIf="totalSale.length" lines="full">
+        <ion-label><h3 class="byzone">{{ item.zone | uppercase }}</h3></ion-label>
+        <ion-label><h3 class="byzone">{{ item.sale }} Cartons</h3></ion-label>
+      </ion-item>
+    </div>
+   
+  </ion-card>
+
+  <ion-card>
+    
+    <ion-item lines="full">
+      <ion-label>VENTE PAR ZONE</ion-label>
+      <ion-spinner *ngIf="!saleByZone.length" name="lines" slot="end"></ion-spinner>
+    </ion-item>
+
+    <div  *ngFor="let item of saleByZone">
+      <ion-item *ngIf="saleByZone.length" lines="full">
+        <ion-label><h3 class="byzone">{{ item.zone | uppercase }}</h3></ion-label>
+        <ion-label><h3 class="byzone">{{ item.sale }} <em>Cartons</em></h3></ion-label>
+      </ion-item>
+    </div>
+
+  </ion-card>
+
+  <ion-card>
+    <ion-item lines="full">
+      <ion-label>PRODUIT VENDU</ion-label>
+      <ion-spinner *ngIf="!saleByProduct.length" name="lines" slot="end"></ion-spinner>
+    </ion-item>
+  
+    <div *ngFor="let item of saleByProduct">
+      <ion-item lines="full" *ngIf="saleByProduct.length">
+        <ion-label>
+          <h2>{{ item.name }} ({{ item.detail }})</h2>
+          <p>{{ item.sale }} cartons</p>
+          
+        </ion-label>
+      </ion-item>
+    </div>
+    
+  </ion-card>
+
+
+</ion-content>

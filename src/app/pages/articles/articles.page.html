@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="end">
+      <ion-button (click)="onClose()">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Articles</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="item-article" *ngFor="let article of articles; let index = index">
+    <ion-card class="card-info">
+      <ion-card-content>
+
+        <ion-text>
+          <h2>{{ article.name }}</h2>
+          <p><strong>Pack :</strong> {{ article.format }} x {{ article.unit }}</p>
+          <p><strong>Prix :</strong> {{ article.price }} {{ article.currency }}</p>
+        </ion-text>
+
+        <ion-item>
+          
+          <ion-chip button (click)="onStepDown(index)" [disabled]="article.qty == 0">
+            <ion-label><ion-icon name="remove" slot="icon-only"></ion-icon></ion-label>
+          </ion-chip>
+          
+          <!-- <ion-chip (click)="onChipQuantity()" *ngIf="!canShowInput">
+            <ion-label>0</ion-label>
+          </ion-chip> -->
+
+          <ion-input  #input  placeholder="0" type="number" [(ngModel)]="article.qty"></ion-input>
+          
+          <ion-chip button (click)="onStepUp(index)">
+            <ion-label><ion-icon name="add" slot="icon-only"></ion-icon></ion-label>
+          </ion-chip>
+      
+        </ion-item>
+
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="card-image" [ngStyle]="{'background-image': 'url('+ article.imageUrl +')'}"></ion-card>
+  </div>
+
+
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="full" (click)="onValider()">valider</ion-button>
+</ion-footer>
+

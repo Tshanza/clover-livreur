@@ -1,0 +1,24 @@
+form {
+    margin: 5% 3% 0 3%;
+    padding: 2%;
+
+    ion-icon {
+        font-size: 1.3em;
+        margin-right: .3em;
+    }
+
+    ion-item {
+        margin-bottom: 2%;
+        box-shadow: 0 0 2px rgb(0 0 0 / 50%);
+        border-radius: 10px;
+    }
+
+    ion-item.item-interactive{
+        --border-width: 0;
+    }
+}
+
+ion-button {
+    margin-top: 5%;
+}
+

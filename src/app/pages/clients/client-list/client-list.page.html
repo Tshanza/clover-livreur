@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleSearchBar()">
+        <ion-icon name="search" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Liste Clients</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content refreshingSpinner="lenes"></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list lines="full">
+    <ion-item button (click)="onSelected(client._id)" *ngFor="let client of dataSource.filteredData">
+      <ion-label>
+
+        <h2>{{ client.ets }}</h2>
+        <p>Code : {{ client.code }}</p>
+        <p>Zone {{ client.zone }} / Q. {{ client.quartier }} / Av. {{ client.avenue }}</p>
+        <p>Gerant : {{ client.gerant }} - Contact : {{ client.contact }}</p>
+        
+      </ion-label>
+      
+    </ion-item>
+    
+  </ion-list>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="full" *ngIf="!searchBar" (click)="onNewClient()">Nouveau Client</ion-button>
+  <ion-searchbar (ionChange)="applyFilter($event)" *ngIf="searchBar" (ionClear)="toggleSearchBar()" placeholder="trouver un client"></ion-searchbar>
+</ion-footer>

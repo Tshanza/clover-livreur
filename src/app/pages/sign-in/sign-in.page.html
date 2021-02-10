@@ -1,0 +1,19 @@
+
+<ion-content>
+  <p>
+    <img src="assets/image/clover-logo-1.svg" alt="logo clover">
+  </p>
+  <form (ngSubmit)="onConnexion(login)" #login="ngForm">
+    <!-- <h1>CONNEXION</h1> -->
+    <ion-item>
+      <ion-label><ion-icon name="person"></ion-icon></ion-label>
+      <ion-input required placeholder="Nom d'utilisateur" name="email" minlength="10" ngModel type="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label><ion-icon name="lock-closed"></ion-icon></ion-label>
+      <ion-input required placeholder="Mot de passe" name="password" minlength="6" ngModel type="password"></ion-input>
+    </ion-item>
+
+    <ion-button shape="round" type="submit" expand="full" [disabled]="login.invalid">connexion</ion-button>
+  </form>
+</ion-content>

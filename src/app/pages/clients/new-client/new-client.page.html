@@ -1,0 +1,53 @@
+
+<ion-content>
+
+  <ion-toolbar color="primary">
+  
+    <ion-title>Nouveau Client</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onClose()">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  
+  </ion-toolbar>
+  
+  <form (ngSubmit)="onCreateClient(form)" #form="ngForm">
+    <ion-item>
+      <ion-label><ion-icon name="storefront"></ion-icon></ion-label>
+      <ion-input name="ets" placeholder="Nom du point de vente" required ngModel></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label><ion-icon name="server"></ion-icon></ion-label>
+      <ion-input name="zone" placeholder="Zone" required ngModel></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label><ion-icon name="location"></ion-icon></ion-label>
+      <ion-input name="avenue" placeholder="Avenue" required ngModel></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label><ion-icon name="location"></ion-icon></ion-label>
+      <ion-input name="quartier" placeholder="Quartier" required ngModel></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label><ion-icon name="location"></ion-icon></ion-label>
+      <ion-input name="commune" placeholder="Commune" required ngModel></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label><ion-icon name="location"></ion-icon></ion-label>
+      <ion-textarea name="reference" placeholder="Reference" required ngModel></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label><ion-icon name="person"></ion-icon></ion-label>
+      <ion-input name="gerant" placeholder="Nom du responsable" required ngModel></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label><ion-icon name="call"></ion-icon></ion-label>
+      <ion-input type="tel" minlength="10" name="contact" placeholder="Numero de contact" required ngModel></ion-input>
+    </ion-item>
+  
+    <ion-button expand="full" type="submit">creer le client</ion-button>
+  
+  </form>
+  </ion-content>
+  

@@ -1,0 +1,44 @@
+ion-item {
+    margin-bottom: 3%;
+    overflow: hidden;
+    border-radius: 1em;
+
+    ion-icon {
+        font-size: 1.3em;
+    }
+
+}
+
+
+form {
+    padding: 3vh 2vh;
+    margin: 1em;
+    background-color: #f4f5f8;
+    border-radius: 1em;
+    box-shadow: 0 0 1em rgb(0 92 170);
+
+}
+
+ion-button {
+    margin-top: 7%;
+}
+
+p {
+    text-align: center;
+}
+
+img {
+    height: 30vh;
+}
+
+ion-content {
+    --background: #1692e5;
+}
+
+h1 {
+    color:#005caa;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: .5em;
+    
+}
