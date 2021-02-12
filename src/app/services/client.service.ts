@@ -2,14 +2,27 @@ import { Injectable } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { Client } from "../models/client.model";
 import firebase from 'firebase';
+import { AngularFireDatabase } from "@angular/fire/database";
 
 @Injectable()
 
 export class ClientService {
 
-    constructor(private db: AngularFirestore){}
+    constructor(private db: AngularFirestore,
+                private database: AngularFireDatabase){}
 
     async getClients(): Promise<Client[]>{
+
+        return new Promise((resolve, reject) => {
+            this.database.list('clients').valueChanges()
+                .subscribe((items: Client[]) => {
+                    console.log('items', items);
+                    resolve(items);
+                    
+                })
+
+        });
+
         return new Promise((resolve, reject) => {
             this.db.firestore.collection('clients').get()
                 .then(res => {
@@ -39,6 +52,23 @@ export class ClientService {
     }
 
     async getClient(id: string): Promise<Client>{
+        return new Promise((resolve, reject) => {
+            this.database.object('clients/' + id).valueChanges()
+                .subscribe((client: Client) => {
+                    // console.log('client loaded', client);
+                    resolve(client);
+                })
+                
+        })
+
+        return new Promise((resolve, reject) => {
+            this.database.object('client/' + id).valueChanges()
+                .subscribe((item: Client) => {
+                    resolve(item);
+                    
+                })
+        })
+
         return new Promise((resolve, reject) => {
             this.db.firestore.collection('clients').doc(id).get()
                 .then(res => {
@@ -83,6 +113,12 @@ export class ClientService {
     }
 
     async createClient(client: Client): Promise<boolean>{
+        client._id = client.code;
+
+        return new Promise((resolve, reject) => {
+            this.database.object('clients/' + client.code).set({...client})
+        });
+
         return new Promise((resolve, reject) => {
             this.db.firestore.collection('clients').add({
                 ets: client.ets,

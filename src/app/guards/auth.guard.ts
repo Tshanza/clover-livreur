@@ -16,6 +16,7 @@ export class AuthGuard implements CanLoad {
 
     if(!isAuth){
       this.router.navigateByUrl('/sign-in');
+      this.authService.checkAuthStatus();
       return true;
 
     }

@@ -4,6 +4,9 @@ import { Router } from "@angular/router";
 import { AlertController } from "@ionic/angular";
 import { Plugins } from '@capacitor/core';
 import { AUTH_KEY } from "../guards/auto-sign.guard";
+import { Edition } from "../models/order.model";
+
+export const USER_ID = "userID";
 
 const { Storage } = Plugins;
 
@@ -12,12 +15,23 @@ const { Storage } = Plugins;
 export class AuthService {
 
     isAuth: boolean = false;
-    userId: String;
+    userId;
 
     constructor(private auth: AngularFireAuth,
                 private router: Router,
-                private alertCtrl: AlertController){}
+                private alertCtrl: AlertController){
+
+        this.getUserId();
+    }
     
+
+    async getUserId(){
+        const value = (await Storage.get({key: USER_ID})).value;
+        this.userId = JSON.parse(value);
+        console.log('get user id', this.userId);
+
+    }
+
     async signIn(credential: {email: string, password: string}): Promise<boolean>{
         return new Promise((resolve, reject) => {
             this.auth.signInWithEmailAndPassword(credential.email, credential.password)
@@ -26,6 +40,7 @@ export class AuthService {
                     this.isAuth = true;
                     Storage.set({key: AUTH_KEY, value: 'true'});
                     console.log('User signed In !');
+                    Storage.set({key: USER_ID, value: ''})
 
                 })
                 .catch(error => {
@@ -42,7 +57,10 @@ export class AuthService {
                 .then(res => {
                     resolve(true);
                     this.isAuth = false;
+
                     Storage.remove({key: AUTH_KEY});
+                    Storage.remove({key: USER_ID});
+
                     this.router.navigateByUrl('/');
                     console.log('Signed Out successfuly !');
 
@@ -68,10 +86,19 @@ export class AuthService {
             ]
         });
 
-        this.auth.onAuthStateChanged(user => {
+        this.auth.onAuthStateChanged(async (user) => {
             if(user){
-                this.userId = user.uid;
-                
+
+                if(!(this.userId && this.userId.uid === user.uid)){
+                    const uid = {
+                        uid: user.uid,
+                        userName: user.email,
+                        name: user.displayName,
+                    }
+    
+                    Storage.set({key: USER_ID, value: JSON.stringify(uid)});
+                }
+               
             }else {
                 this.isAuth = false;
                 this.router.navigateByUrl('/sign-in', { replaceUrl: true});

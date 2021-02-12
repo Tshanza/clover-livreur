@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { Order } from 'src/app/models/order.model';
 import { AnalyseService } from 'src/app/services/analyse.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { OrderService } from 'src/app/services/order.service';
 
 @Component({
   selector: 'app-home',
@@ -12,44 +14,75 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class HomePage implements OnInit {
 
-  saleByZone: {zone: string, sale: number}[] = [];
-  saleByProduct: {id: string, name: string, detail: string, sale: number}[] = [];
-  totalSale: any[] = [];
+  saleByZone: {zone: string, sale: number, client: number}[] = [];
+  saleByProduct: {name: string, sale: number}[] = [];
+  totalSale: {client: number, article: number, montant: number};
+  orders: Order[] = [];
+  value: string = '';
 
   constructor(private alertCtrl: AlertController,
               private authService: AuthService,
               private auth: AngularFireAuth,
               private router: Router,
-              private analyseService: AnalyseService) { }
+              private analyseService: AnalyseService,
+              private orderService: OrderService) { }
 
-  ngOnInit() {
-    this.loadSBP();
-    this.loadSBZ();
+  async ngOnInit() {
+    this.loadOrders();
     
   }
 
   async onRefresh(event: Event){
-    this.loadSBP();
-    this.loadSBZ();
+    this.loadOrders();
 
     (event.target as HTMLIonRefresherElement).complete();
+    this.value = '';
 
   }
 
-  onGetDate(event: Event){
-    const date = (event.target as HTMLIonDatetimeElement).value;
+  async loadOrders(){
+    this.orders = await this.orderService.getOrders();
 
-    console.log('date', date);
-    console.log('date 2', new Date(date).toDateString());
+    this.loadSBP();
+    this.loadSBZ();
+    this.totalSales();
+
+  }
+
+  async onGetDate(event: Event){
+    
+    const date = (event.target as HTMLIonDatetimeElement).value;
+    const d = new Date(date).toDateString();
+
+    console.log('date', d);
+    
+    const filteredData = this.orders.filter(order => {
+      const tmp = new Date(order.date).toDateString();
+      return d == tmp;
+    });
+
+    console.log('filter', filteredData);
+    //update display
+    this.totalSale = await this.analyseService.totalSales(filteredData);
+    this.saleByZone = await this.analyseService.salesByZone(filteredData);
+    this.saleByProduct = await this.analyseService.salesByProduct(filteredData);
+
+    
+
+  }
+
+  async totalSales(){
+    this.totalSale = await this.analyseService.totalSales(this.orders);
+
   }
 
   async loadSBZ(){
-    this.saleByZone = await this.analyseService.salesByZone();
+    this.saleByZone = await this.analyseService.salesByZone(this.orders);
 
   }
 
   async loadSBP(){
-    this.saleByProduct = await this.analyseService.salesByProduct();
+    this.saleByProduct = await this.analyseService.salesByProduct(this.orders);
   }
 
   async onSignOut(){

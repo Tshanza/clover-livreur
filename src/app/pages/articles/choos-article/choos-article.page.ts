@@ -42,7 +42,9 @@ export class ChoosArticlePage implements OnInit {
   async onGetClient(): Promise<Client>{
     const id = this.route.snapshot.params['id'];
     console.log('id', id);
-    return await this.clientService.getClient(id);
+    const res = await this.clientService.getClient(id);
+    console.log('client', res);
+    return res;
     
   }
 

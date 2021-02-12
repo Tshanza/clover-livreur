@@ -42,6 +42,7 @@ export class ClientListPage implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     console.log('filer value', filterValue);
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    console.log(this.dataSource);
 
   }
 

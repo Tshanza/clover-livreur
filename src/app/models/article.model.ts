@@ -10,6 +10,7 @@ export class Article {
                 public unit: number,
                 public price: number,
                 public currency: string,
+                public subCategory?: string,
                 public qty?: number,
                 public total?: number){}
 

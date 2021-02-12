@@ -23,3 +23,16 @@ export const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+
+
+
+
+
+// {
+//   apiKey: "AIzaSyBgPHEROGgsdfhNj6dFr4YvkoojDlmqlXI",
+//   authDomain: "clover-98154.firebaseapp.com",
+//   projectId: "clover-98154",
+//   storageBucket: "clover-98154.appspot.com",
+//   messagingSenderId: "742844254818",
+//   appId: "1:742844254818:web:72629011cfcd2744839f3b"
+// }

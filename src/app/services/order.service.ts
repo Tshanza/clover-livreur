@@ -1,21 +1,25 @@
 import { Injectable } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { Order } from "../models/order.model";
+import { AuthService } from "./auth.service";
 
 @Injectable()
 
 export class OrderService {
     
-    constructor(private db: AngularFirestore){}
+    constructor(private db: AngularFirestore,
+                private authService: AuthService){}
 
     async createOrder(order: Order): Promise<boolean>{
+        delete order._id;
+        
         return new Promise((resolve, reject) => {
             this.db.firestore.collection('orders').add({
+                ...order,
                 user: {...order.user},
                 client: {...order.client},
                 articles: order.articles,
-                date: order.date,
-                total: order.total
+                edition: {...order.edition},
 
             })
                 .then(res => {
@@ -24,6 +28,7 @@ export class OrderService {
 
                 })
                 .catch(error => {
+
                     console.log('Place order failed !', error);
                     resolve(false);
 
@@ -34,11 +39,12 @@ export class OrderService {
     async updateOrder(order: Order){
         return new Promise((resolve, reject) => {
             this.db.firestore.collection('orders').doc(order._id).update({
-                date: order.date,
-                client: order.client,
+                ...order,
+                user: {...order.user},
+                client: {...order.client},
                 articles: order.articles,
-                total: order.total,
-                user: order.user
+                edition: {...order.edition},
+
             })
                 .then(res => {
                     console.log('Order edited !');
@@ -55,8 +61,11 @@ export class OrderService {
     }
 
     async getOrders(): Promise<Order[]>{
+
+        const user = this.authService.userId;
+
         return new Promise((resolve, reject) => {
-            this.db.firestore.collection('orders').get()
+            this.db.firestore.collection('orders').where('user._id', '==', user.uid).get()
                 .then(res => {
                     if(res.empty){
                         console.log('collection empty !!! Network issue');

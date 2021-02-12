@@ -79,26 +79,26 @@ export class ArticlesPage implements OnInit {
   }
 
   async onValider(){
-    const list: Article[] = this.articles.filter(article => article.qty != 0);
-    // const total = list.reduce((accumulator, currentValue) => accumulator + currentValue)
-    let total = 0;
-    list.forEach(item => {
-      total+= item.total;
+    // const list: Article[] = this.articles.filter(article => article.qty != 0);
+    // // const total = list.reduce((accumulator, currentValue) => accumulator + currentValue)
+    // let total = 0;
+    // list.forEach(item => {
+    //   total+= item.total;
 
-    })
-    const order: Order = new Order('',this.user, this.client, this.articles, Date.now(),this.changeRate,Date.now().toString(),"CASH", total,);
+    // })
+    // const order: Order = new Order('',this.user, this.client, this.articles, Date.now(),this.changeRate,Date.now().toString(),"CASH", total,);
 
 
-    const isDone = await this.orderService.createOrder(order);
+    // const isDone = await this.orderService.createOrder(order);
 
-    if(isDone){
-      this.modalCtrl.dismiss();
-      this.router.navigateByUrl('/tab', { replaceUrl: true});
+    // if(isDone){
+    //   this.modalCtrl.dismiss();
+    //   this.router.navigateByUrl('/tab', { replaceUrl: true});
       
-    }else {
-      console.log('try again !');
+    // }else {
+    //   console.log('try again !');
 
-    }
+    // }
 
     // const modal = await this.modalCtrl.create({
     //   component: ConfirmPage,

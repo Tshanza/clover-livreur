@@ -7,6 +7,7 @@ import { Order } from 'src/app/models/order.model';
 import { User } from 'src/app/models/user.model';
 import { OrderService } from 'src/app/services/order.service';
 import { UserService } from 'src/app/services/user.service';
+import { Edition } from 'src/app/models/order.model'
 
 @Component({
   selector: 'app-order',
@@ -97,7 +98,14 @@ export class OrderPage implements OnInit {
       total+= item.total;
 
     })
-    const order: Order = new Order('',this.user, this.client, this.articles, Date.now(),this.changeRate,Date.now().toString(),"CASH", total,);
+
+    const editInit: Edition = {
+      lastOrderId: '',
+      name: '',
+      times: 0
+    };
+
+    const order = new Order('',this.user, this.client, this.articles, Date.now(),this.changeRate,Date.now().toString(),"CASH",editInit, total);
     console.log('order', order);
     
     const isDone = await this.orderService.createOrder(order);

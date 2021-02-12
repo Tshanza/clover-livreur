@@ -29,6 +29,7 @@ import { OrderPage } from './pages/my-orders/order/order.page';
 import { UserService } from './services/user.service';
 import { AnalyseService } from './services/analyse.service';
 import { FormatService } from './services/format.service';
+import { AngularFireDatabaseModule } from '@angular/fire/database'
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { FormatService } from './services/format.service';
     MatTableModule,
     FormsModule,
     BrowserAnimationsModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    AngularFireDatabaseModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

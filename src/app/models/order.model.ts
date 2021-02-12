@@ -1,6 +1,8 @@
 import { User } from './user.model';
 import { Client } from './client.model';
 import { Article } from './article.model';
+
+
 export class Order {
 
     constructor(public _id: string,
@@ -11,6 +13,14 @@ export class Order {
                 public changeRate: number,
                 public orderNum: string,
                 public payment: string,
+                public edition: Edition,
                 public total?: number){}
+
+}
+
+export interface Edition {
+    lastOrderId: string;
+    name: string;
+    times: number;
 
 }
