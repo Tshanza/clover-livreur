@@ -113,7 +113,7 @@ export class OrderPage implements OnInit {
 
     if(isDone){
       this.modalCtrl.dismiss();
-      this.router.navigateByUrl('/tab', { replaceUrl: true});
+      this.router.navigateByUrl('/tab/home', { replaceUrl: true});
       
     }else {
       console.log('try again !');

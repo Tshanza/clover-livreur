@@ -46,7 +46,7 @@
       <ion-input type="tel" minlength="10" name="contact" placeholder="Numero de contact" required ngModel></ion-input>
     </ion-item>
   
-    <ion-button expand="full" type="submit">creer le client</ion-button>
+    <ion-button expand="full" type="submit" [disabled]="form.invalid">creer le client</ion-button>
   
   </form>
   </ion-content>

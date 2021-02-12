@@ -11,7 +11,9 @@
     <ion-title>Commandes</ion-title>
   </ion-toolbar>
 
-  <ion-searchbar showCancelButton="always" (ionChange)="applyFilter($event)" *ngIf="showSearchBar" (ionClear)="toggleSearchBar()" placeholder="chercher une cmd"></ion-searchbar>
+  <ion-searchbar showCancelButton="always" (ionChange)="applyFilter($event)"
+               *ngIf="showSearchBar" (ionClear)="toggleSearchBar()"
+               placeholder="chercher une cmd" (ionCancel)="cancelFilter($event)"></ion-searchbar>
 </ion-header>
 
 <ion-content>
@@ -22,13 +24,14 @@
   
   <ion-list lines="full">
 
-    <ion-item-sliding *ngFor="let order of dataSource.filteredData">
+    <ion-item-sliding *ngFor="let order of dataFilter">
 
       <ion-item (click)="onDetail(order)">
         <ion-label>
-          <h2>{{ order.client.code }} -- {{ order.client.ets | uppercase }}</h2>
+          <h2>{{ order.client.ets | uppercase }}</h2>
+          <h3><strong>{{ order.client.code }}</strong></h3>
           <p>Zone. {{ order.client.zone }} / Q. {{ order.client.quartier }} / Av. {{ order.client.avenue}}</p>
-          <p>Gerant. {{ order.client.gerant }} -- Conatact. {{ order.client.contact }}</p>
+          <!-- <p>Gerant. {{ order.client.gerant }} -- Conatact. {{ order.client.contact }}</p> -->
           <p>Date : {{ formatService.localDateCourt(order.date) | uppercase }}</p>
         </ion-label>
       </ion-item>

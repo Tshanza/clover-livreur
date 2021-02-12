@@ -15,11 +15,11 @@
     <ion-refresher-content refreshingSpinner="circles"></ion-refresher-content>
   </ion-refresher>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <!-- <ion-fab vertical="bottom" horizontal="center" slot="fixed">
     <ion-fab-button (click)="onStart()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
-  </ion-fab>
+  </ion-fab> -->
 
   <ion-item>
     <ion-label>Considerer la date du </ion-label>
@@ -29,7 +29,7 @@
   <ion-card>
     <ion-item lines="full">
       <ion-label>TOTAL VENDU</ion-label>
-      <ion-spinner *ngIf="!totalSale" name="lines" slot="end"></ion-spinner>
+      <ion-spinner *ngIf="!orders.length" name="lines" slot="end"></ion-spinner>
     </ion-item>
 
     <div *ngIf="totalSale">
@@ -53,7 +53,7 @@
     
     <ion-item lines="full">
       <ion-label>VENTE PAR ZONE</ion-label>
-      <ion-spinner *ngIf="!saleByZone.length" name="lines" slot="end"></ion-spinner>
+      <ion-spinner *ngIf="!orders.length" name="lines" slot="end"></ion-spinner>
     </ion-item>
 
     <div  *ngFor="let item of saleByZone">
@@ -69,7 +69,7 @@
   <ion-card>
     <ion-item lines="full">
       <ion-label>PRODUIT VENDU</ion-label>
-      <ion-spinner *ngIf="!saleByProduct.length" name="lines" slot="end"></ion-spinner>
+      <ion-spinner *ngIf="!orders.length" name="lines" slot="end"></ion-spinner>
     </ion-item>
   
     <div *ngFor="let item of saleByProduct">

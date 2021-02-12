@@ -59,7 +59,8 @@ export class ClientListPage implements OnInit {
 
   toggleSearchBar(){
     this.searchBar = !this.searchBar;
-
+    this.dataSource.filter = "";
+    
   }
 
   async onNewClient(){

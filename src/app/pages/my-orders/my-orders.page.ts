@@ -15,6 +15,7 @@ import { OrderEditPage } from './order-edit/order-edit.page';
 export class MyOrdersPage implements OnInit {
 
   data: Order[] = [];
+  dataFilter: Order[] = [];
   dataSource: MatTableDataSource<Order> = new MatTableDataSource(this.data);
   showSearchBar:boolean = false;
   
@@ -35,6 +36,8 @@ export class MyOrdersPage implements OnInit {
 
   async onRefresh(event: Event){
     const data = await this.orderService.getOrders();
+    this.dataFilter = data;
+    this.data = data;
     this.dataSource = new MatTableDataSource(data);
 
     (event.target as HTMLIonRefresherElement).complete();
@@ -45,15 +48,27 @@ export class MyOrdersPage implements OnInit {
     const loader = await this.loadingCtrl.create();
     await loader.present();
 
-    const data = await this.orderService.getOrders();
-    this.dataSource = new MatTableDataSource(data);
+    this.data = await this.orderService.getOrders();
+    this.dataFilter = this.data;
+    // this.dataSource = new MatTableDataSource(data);
     loader.dismiss();
 
   }
 
   async applyFilter(event: Event){
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    const value = filterValue.trim().toLowerCase();
+    this.dataFilter = this.data.filter(order => order.client.code.includes(value));
+
+    const ev = (event.target as HTMLInputElement)
+    console.log('see event', ev);
+
+  }
+
+  async cancelFilter(event: Event){
+    console.log('cancel filter');
+    const value = '';
+    this.dataFilter = this.data.filter(order => order.client.code.includes(value));
 
   }
 

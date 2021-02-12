@@ -32,6 +32,17 @@ export class HomePage implements OnInit {
     
   }
 
+  ionViewDidEnter(){
+    console.log('ion view did enter !');
+    this.loadOrders();
+    
+  }
+
+  ionViewDidLeave(){
+    console.log('ion view did leave !');
+
+  }
+
   async onRefresh(event: Event){
     this.loadOrders();
 

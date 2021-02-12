@@ -58,7 +58,7 @@ export class AnalyseService {
             })
 
             console.log('sales by zone',tmp);
-            resolve(tmp);
+            resolve(tmp.sort((a, b) => this.sortZone(a,b)));
 
         })
         
@@ -121,9 +121,23 @@ export class AnalyseService {
             // })
 
             // console.log('sales by product', tmp);
-            resolve(test);
+            resolve(test.sort((a, b) => this.sortProduct(a,b)));
 
         })
+    }
+
+    sortProduct(a: {name: string, sale: number}, b: {name: string, sale: number}){
+        if(a.name === b.name) return 0;
+        if(a.name > b.name) return 1;
+        if(a.name < b.name) return -1;
+
+    }
+
+    sortZone(a: {zone: string, sale: number, client: number}, b: {zone: string, sale: number, client: number}){
+        if(a.zone === b.zone) return 0;
+        if(a.zone > b.zone) return 1;
+        if(a.zone < b.zone) return -1;
+
     }
 
 }

@@ -35,7 +35,6 @@ import { AngularFireDatabaseModule } from '@angular/fire/database'
   declarations: [
     AppComponent,
     NewClientPage,
-    ClientListPage,
     OrderDetailPage,
     OrderEditPage,
     OrderPage

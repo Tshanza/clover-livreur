@@ -35,7 +35,7 @@
 <ion-content>
 
   <ion-list lines="full">
-    <ion-item *ngFor="let article of order.articles">
+    <ion-item *ngFor="let article of order.articles; let index = index" (click)="onArticle(index)">
 
       <ion-thumbnail slot="start">
         <img [src]="article.imageUrl">

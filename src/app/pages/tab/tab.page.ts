@@ -11,17 +11,20 @@ export class TabPage implements OnInit {
     {
       title: 'Acceuil',
       icon: 'home',
-      url: 'home'
-    },
-    {
-      title: 'Recents',
-      icon: 'pulse',
-      url: 'recent'
+      url: 'home',
+      size: ''
     },
     {
       title: 'Clients',
-      icon: 'people',
-      url: 'client'
+      icon: 'bag-add',
+      url: 'client',
+      size: 'large'
+    },
+    {
+      title: 'Recents',
+      icon: 'bag-check',
+      url: 'recent',
+      size: 'large'
     },
 
   ]

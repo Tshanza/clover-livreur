@@ -36,6 +36,7 @@ export class ChoosArticlePage implements OnInit {
 
   toggleSearchBar(){
     this.searchBar = !this.searchBar;
+    this.dataSource.filter = "";
 
   }
 
