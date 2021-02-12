@@ -15,7 +15,12 @@
 </ion-header>
 
 <ion-content>
-  
+
+  <div id="container" *ngIf="!dataSource.data.length">
+    <ion-spinner color="primary"></ion-spinner>
+    <ion-label>Patientez svp...  </ion-label>
+  </div>
+
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>

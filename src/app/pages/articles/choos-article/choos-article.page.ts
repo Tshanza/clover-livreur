@@ -54,13 +54,13 @@ export class ChoosArticlePage implements OnInit {
     if(this.dataSource.data.length) return;
 
     const loader = await this.loadingCtrl.create();
-    await loader.present();
+    // await loader.present();
 
     const data = await this.articleService.getAricles();
     console.log('data', data);
     this.dataSource = new MatTableDataSource(data);
     this.getCategory();
-    loader.dismiss();
+    // loader.dismiss();
 
   }
 

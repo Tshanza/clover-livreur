@@ -49,12 +49,12 @@ export class MyOrdersPage implements OnInit {
 
   async loadClients(){
     const loader = await this.loadingCtrl.create();
-    await loader.present();
+    // await loader.present();
 
     this.data = await this.orderService.getOrders();
     this.dataFilter = this.data;
     // this.dataSource = new MatTableDataSource(data);
-    loader.dismiss();
+    // loader.dismiss();
 
   }
 

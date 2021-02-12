@@ -1,0 +1,22 @@
+div.image {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 120px;
+    width: 90px;
+    margin: 5px 0;
+}
+
+h2.header {
+    text-align: center;
+}
+
+#container {
+    text-align: center;
+  
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }

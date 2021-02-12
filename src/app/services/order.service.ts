@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { Edition, Order } from "../models/order.model";
 import { AuthService } from "./auth.service";
@@ -8,7 +9,8 @@ import { AuthService } from "./auth.service";
 export class OrderService {
     
     constructor(private db: AngularFirestore,
-                private authService: AuthService){}
+                private authService: AuthService,
+                private auth: AngularFireAuth){}
 
     async createOrder(order: Order): Promise<boolean>{
         delete order._id;
@@ -60,12 +62,21 @@ export class OrderService {
 
     }
 
+    async loadUID(): Promise<string>{
+        return new Promise((resolve, reject) => {
+            this.auth.onAuthStateChanged(user => {
+                resolve(user.uid);
+
+            })
+        })
+    }
+
     async getOrders(): Promise<Order[]>{
 
-        const user = this.authService.userId;
+        let uid: string = await this.loadUID();
 
         return new Promise((resolve, reject) => {
-            this.db.firestore.collection('orders').where('user._id', '==', user.uid).get()
+            this.db.firestore.collection('orders').where('user._id', '==', uid).get()
                 .then(res => {
                     if(res.empty){
                         console.log('collection empty !!! Network issue');
@@ -81,7 +92,8 @@ export class OrderService {
                     })
 
                     //We can sort data here...
-                    
+                    tmp.sort((a,b) => this.sortByDate(a,b));
+                    tmp.sort((a,b) => this.sortByEdition(a,b));
                     resolve(tmp);
 
                 })
@@ -142,9 +154,15 @@ export class OrderService {
 
     sortByDate(a: Order, b: Order){
        if(a.date === b.date) return 0;
-       if(a.date > b.date) return 1;
-       if(a.date < b.date) return -1;
+       if(a.date > b.date) return -1;
+       if(a.date < b.date) return 1;
 
+    }
+
+    sortByEdition(a: Order, b: Order){
+        if(a.edition.active === b.edition.active) return 0;
+        if(a.edition.active) return -1;
+        if(!a.edition.active) return 1;
     }
 
 }
