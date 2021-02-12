@@ -4,7 +4,6 @@ import { Router } from "@angular/router";
 import { AlertController } from "@ionic/angular";
 import { Plugins } from '@capacitor/core';
 import { AUTH_KEY } from "../guards/auto-sign.guard";
-import { Edition } from "../models/order.model";
 
 export const USER_ID = "userID";
 

@@ -1,10 +1,13 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { Article } from 'src/app/models/article.model';
 import { Client } from 'src/app/models/client.model';
 import { Order } from 'src/app/models/order.model';
 import { User } from 'src/app/models/user.model';
+import { ArticleService } from 'src/app/services/article.service';
+import { ClientService } from 'src/app/services/client.service';
 import { OrderService } from 'src/app/services/order.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -15,110 +18,100 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class OrderEditPage implements OnInit {
 
+  searchBar:boolean = false;
+  dataSource: MatTableDataSource<Article> = new MatTableDataSource([]);
+  categories: string[] = [];
+  orderList: Article[] = [];
+
   @Input() order: Order;
-  @Input() client: Client;
 
-  articles: Article[] = [];
-  dataValide: boolean = false;
-  user: User;
-  changeRate: number = 1;
+  constructor(private articleService: ArticleService,
+              private loadingCtrl: LoadingController,
+              private modalCtrl: ModalController,
+              private route: ActivatedRoute,
+              private clientService: ClientService) { }
 
-  @ViewChild('input') input: ElementRef<HTMLInputElement>;
-
-  constructor(private modalCtrl: ModalController,
-              private router: Router,
-              private userService: UserService,
-              private orderService: OrderService,
-              private loadingCtrl: LoadingController) { this.articles = this.order.articles; }
-
-  ngOnInit() {
-    this.onGetUser();
-    console.log('client', this.client);
-    console.log('articles', this.articles)
+  async ngOnInit() {
+    this.loadArticle();
+    console.log('list', this.orderList);
 
   }
 
-  ngAfterViewInit(){
-   
-    
-  }
-
-  ionViewDidLeave(){
-    
-  }
-
-  async onEvent(event: Event){
-    const value = (event.target as HTMLIonInputElement).value;
-    console.log('value by input', value);
-
-    const res = this.articles.findIndex(article => article.qty === 0);
-    if(res == -1) this.dataValide = true;
-    if(res > -1) this.dataValide = false;
+  toggleSearchBar(){
+    this.searchBar = !this.searchBar;
+    this.dataSource.filter = "";
 
   }
 
-  async onClose(){
+  onclose(){
     this.modalCtrl.dismiss();
+    
+  }
+
+
+  async loadArticle(){
+
+    if(this.dataSource.data.length) return;
+
+    const loader = await this.loadingCtrl.create();
+    // await loader.present();
+
+    const data = await this.articleService.getAricles();
+    console.log('data', data);
+    this.dataSource = new MatTableDataSource(data);
+    this.getCategory();
+    // loader.dismiss();
 
   }
 
-  onFocusChange(){
-    console.log('focus changed !');
-    console.log('view child', this.input);
-  }
-
-  async onGetUser(){
-    this.user = await this.userService.getUserInfos();
-    console.log('user Info', this.user);
+  async applyFilter(event: Event){
+    const filterValue = (event.target as HTMLInputElement).value;
+    console.log('filer value', filterValue);
+    this.dataSource.filter = filterValue.trim().toLowerCase();
 
   }
 
-  onStepUp(index: number){
-    this.articles[index].qty++;
-    this.articles[index].total = this.articles[index].price * this.articles[index].qty;
+  getCategory(){
+    const data = this.dataSource.filteredData;
+    const tmp = [];
 
+    data.forEach(item => {
+      if(!tmp.includes(item.category)){
+        tmp.push(item.category);
+
+      }
+
+    })
+    console.log('categories', tmp);
+    this.categories = tmp;
   }
 
-  onStepDown(index: number){
-    this.articles[index].qty--;
-    this.articles[index].total = this.articles[index].price * this.articles[index].qty;
+  async onSelectArticle(article: Article){
+    
+    const index = this.orderList.findIndex(item => item.code === article.code);
+
+    if(index > -1){
+      this.orderList.splice(index, 1);
+      return;
+
+    }
+
+    this.orderList.push(article);
 
   }
 
   async onValider(){
-    // const loader = await this.loadingCtrl.create();
-    // await loader.present();
-   
-    // let total = 0;
-    // this.articles.forEach(item => {
-    //   total+= item.total;
+    const loader = await this.loadingCtrl.create();
+    await loader.present();
 
-    // })
-    
-    // // const order: Order = new Order('',this.user, this.client, this.articles, Date.now(),this.changeRate,Date.now().toString(),"CASH", total,);
-    // // console.log('order', order);
-    
-    // // const isDone = await this.orderService.createOrder(order);
-    // await loader.dismiss();
+    this.orderList.forEach(article => {
+      this.order.articles.find(art => art.code === article.code) ? "" : this.order.articles.push(article);
 
-    // if(isDone){
-    //   this.modalCtrl.dismiss();
-    //   this.router.navigateByUrl('/tab', { replaceUrl: true});
-      
-    // }else {
-    //   console.log('try again !');
+    })
 
-    // }
+    await loader.dismiss();
+    this.modalCtrl.dismiss();
 
-    // // const modal = await this.modalCtrl.create({
-    // //   component: ConfirmPage,
-    // //   componentProps: { order }
-
-    // // });
-
-    // // await modal.present();
-
-    // // this.router.navigateByUrl('/confirm', { replaceUrl: true });
-    
   }
+
 }

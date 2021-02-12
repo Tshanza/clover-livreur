@@ -29,12 +29,12 @@ export class ClientListPage implements OnInit {
 
   async getClients(){
     const loading = await this.loadingCtrl.create();
-    await loading.present();
+    // await loading.present();
 
     this.clients = await this.clientService.getClients();
     this.dataSource = new MatTableDataSource(this.clients);
     console.log('state', this.dataSource.filteredData);
-    await loading.dismiss();
+    // await loading.dismiss();
 
   }
 

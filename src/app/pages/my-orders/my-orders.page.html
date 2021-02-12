@@ -25,6 +25,11 @@
 
 <ion-content>
 
+  <div id="container" *ngIf="!data.length">
+    <ion-spinner color="primary"></ion-spinner>
+    <!-- <ion-label>Patientez svp...  </ion-label> -->
+  </div>
+
   <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
     <ion-refresher-content refreshingSpinner="circles"></ion-refresher-content>
   </ion-refresher>

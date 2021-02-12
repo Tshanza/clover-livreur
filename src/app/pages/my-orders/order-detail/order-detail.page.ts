@@ -140,6 +140,17 @@ export class OrderDetailPage implements OnInit {
 
   }
 
+  async addArticles(order: Order){
+    const modal = await this.modalCtrl.create({
+      component: OrderEditPage,
+      componentProps: { order },
+
+    });
+
+    await modal.present();
+    
+  }
+
   // async onValider(){
   //   const loader = await this.loadingCtrl.create();
   //   await loader.present();
