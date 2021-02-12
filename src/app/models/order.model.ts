@@ -22,5 +22,6 @@ export interface Edition {
     lastOrderId: string;
     name: string;
     times: number;
+    active: boolean;
 
 }

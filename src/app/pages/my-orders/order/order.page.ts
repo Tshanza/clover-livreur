@@ -31,10 +31,12 @@ export class OrderPage implements OnInit {
               private orderService: OrderService,
               private loadingCtrl: LoadingController) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.onGetUser();
     console.log('client', this.client);
     console.log('articles', this.articles)
+    this.changeRate = await this.orderService.getChangeRate();
+
 
   }
 
@@ -102,7 +104,8 @@ export class OrderPage implements OnInit {
     const editInit: Edition = {
       lastOrderId: '',
       name: '',
-      times: 0
+      times: 0,
+      active: true
     };
 
     const order = new Order('',this.user, this.client, this.articles, Date.now(),this.changeRate,Date.now().toString(),"CASH",editInit, total);

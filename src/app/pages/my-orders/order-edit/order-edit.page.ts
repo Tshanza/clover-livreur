@@ -86,39 +86,39 @@ export class OrderEditPage implements OnInit {
   }
 
   async onValider(){
-    const loader = await this.loadingCtrl.create();
-    await loader.present();
+    // const loader = await this.loadingCtrl.create();
+    // await loader.present();
    
-    let total = 0;
-    this.articles.forEach(item => {
-      total+= item.total;
+    // let total = 0;
+    // this.articles.forEach(item => {
+    //   total+= item.total;
 
-    })
+    // })
     
-    const order: Order = new Order('',this.user, this.client, this.articles, Date.now(),this.changeRate,Date.now().toString(),"CASH", total,);
-    console.log('order', order);
+    // // const order: Order = new Order('',this.user, this.client, this.articles, Date.now(),this.changeRate,Date.now().toString(),"CASH", total,);
+    // // console.log('order', order);
     
-    const isDone = await this.orderService.createOrder(order);
-    await loader.dismiss();
+    // // const isDone = await this.orderService.createOrder(order);
+    // await loader.dismiss();
 
-    if(isDone){
-      this.modalCtrl.dismiss();
-      this.router.navigateByUrl('/tab', { replaceUrl: true});
+    // if(isDone){
+    //   this.modalCtrl.dismiss();
+    //   this.router.navigateByUrl('/tab', { replaceUrl: true});
       
-    }else {
-      console.log('try again !');
+    // }else {
+    //   console.log('try again !');
 
-    }
+    // }
 
-    // const modal = await this.modalCtrl.create({
-    //   component: ConfirmPage,
-    //   componentProps: { order }
+    // // const modal = await this.modalCtrl.create({
+    // //   component: ConfirmPage,
+    // //   componentProps: { order }
 
-    // });
+    // // });
 
-    // await modal.present();
+    // // await modal.present();
 
-    // this.router.navigateByUrl('/confirm', { replaceUrl: true });
+    // // this.router.navigateByUrl('/confirm', { replaceUrl: true });
     
   }
 }

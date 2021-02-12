@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { CanLoad, Router } from '@angular/router';
 import { Plugins } from '@capacitor/core';
 import { AuthService } from '../services/auth.service';
-import { ImageService } from '../services/image.service';
 
 const { Storage } = Plugins;
 export const AUTH_KEY = 'isAuthenticate';
@@ -26,7 +25,6 @@ export class AutoSignGuard implements CanLoad {
 
     }
 
-    
     return true;
   }
 

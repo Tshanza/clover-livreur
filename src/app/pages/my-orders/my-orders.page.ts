@@ -18,14 +18,17 @@ export class MyOrdersPage implements OnInit {
   dataFilter: Order[] = [];
   dataSource: MatTableDataSource<Order> = new MatTableDataSource(this.data);
   showSearchBar:boolean = false;
+  canFilter: boolean = false;
+  changeRate: number = 0;
   
   constructor(private orderService: OrderService,
               private loadingCtrl: LoadingController,
               private modalCtrl: ModalController,
               public formatService: FormatService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.loadClients();
+    this.changeRate = await this.orderService.getChangeRate();
 
   }
 
@@ -110,4 +113,23 @@ export class MyOrdersPage implements OnInit {
 
   }
 
+  async onGetDate(event: Event){
+    
+    const date = (event.target as HTMLIonDatetimeElement).value;
+    const d = new Date(date);
+
+    console.log('date', d);
+    
+    this.dataFilter = this.data.filter(order => {
+      const tmp = new Date(order.date);
+      return d > tmp;
+    });
+
+  }
+
+  toggleDateFilter(){
+    this.dataFilter = this.data;
+    this.canFilter = !this.canFilter;
+
+  }
 }

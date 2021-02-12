@@ -53,6 +53,7 @@ export class HomePage implements OnInit {
 
   async loadOrders(){
     this.orders = await this.orderService.getOrders();
+    this.orders = this.orders.filter(order => order.edition.active);
 
     this.loadSBP();
     this.loadSBZ();

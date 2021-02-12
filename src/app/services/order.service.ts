@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
-import { Order } from "../models/order.model";
+import { Edition, Order } from "../models/order.model";
 import { AuthService } from "./auth.service";
 
 @Injectable()
@@ -95,8 +95,48 @@ export class OrderService {
 
     //Must be implemented later...
     async cancelOrder(order: Order){
+
+        const edit = order.edition;
+        edit.active = false;
+
         return new Promise((resolve, reject) => {
-            
+            this.db.firestore.collection('orders').doc(order._id).update({edition: {...edit}})
+                .then(res => {
+                    resolve(true);
+                    console.log('order disabled', res);
+
+                })
+                .catch(error => {
+                    resolve(false);
+                    console.log('error on canceling order', error);
+
+                })
+
+        })
+        
+    }
+
+    async getChangeRate(): Promise<number>{
+        return new Promise((resolve, reject) => {
+            this.db.firestore.collection('configs').where('current', '==', true).get()
+                .then(res => {
+                    if(res.empty){
+                        resolve(1);
+                        return;
+                    }
+
+                    res.forEach(r => {
+                        const result = r.data();
+                        console.log('res data', result?.changeRate);
+                        resolve(result?.changeRate);
+                    })
+                    // console.log('change rate', ret);
+
+                })
+                .catch(error => {
+                    reject(error);
+
+                })
         })
     }
 

@@ -21,11 +21,11 @@
   
     <ion-item lines="full">
       <ion-label>
-        <h1> {{ order.client.ets | uppercase }} </h1>
-        <p>code : {{ order.client.code }} zone. {{ order.client.zone }}</p>
+        <h2> {{ order.client.ets | uppercase }} </h2>
+        <p>code : {{ order.client.code }}</p>
         <p> Zone : {{ order.client.zone }} / Q. {{ order.client.quartier}} / Av. {{ order.client.avenue }}</p>
-        <h2><em><strong>USD : {{ order.total |number: '1.2-2'}} </strong></em></h2>
-        <h2><em><strong>CDF : {{ order.total |number: '1.2-2'}} </strong></em></h2>
+        <h3><em><strong>USD : {{ order.total / order.changeRate |number: '1.2-2'}} </strong></em></h3>
+        <h3><em><strong>CDF : {{ order.total |number: '1.2-2'}} </strong></em></h3>
         <!-- <p>cdf : </p> -->
       </ion-label>
     </ion-item>
@@ -43,8 +43,8 @@
 
       <ion-label>
         <h2>{{ article.name }}</h2>
-        <p>{{ article.format }} / {{ article.price }} ({{ article.currency }})</p>
-        <p>Quantite : {{ article.qty }} ({{ article.qty * article.price }} {{ article.currency }})</p>
+        <p>{{ article.format }} {{ article.rate }} / <em>Prix :</em> {{ article.price }} Fc</p>
+        <p>Quantite : {{ article.qty }} ({{ article.total }} Fc)</p>
       </ion-label>
 
     </ion-item>
