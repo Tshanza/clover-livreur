@@ -80,7 +80,8 @@ export class ClientListPage implements OnInit {
   }
 
   onSelected(id: string){
-    this.router.navigateByUrl('/article/choos-article/' + id);
+    // this.router.navigateByUrl('/article/choos-article/' + id);
+    this.router.navigate(['article', id])
     
   }
 

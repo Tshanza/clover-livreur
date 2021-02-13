@@ -116,13 +116,13 @@ export class MyOrdersPage implements OnInit {
   async onGetDate(event: Event){
     
     const date = (event.target as HTMLIonDatetimeElement).value;
-    const d = new Date(date);
+    const d = new Date(date).toDateString();
 
     console.log('date', d);
     
     this.dataFilter = this.data.filter(order => {
-      const tmp = new Date(order.date);
-      return d > tmp;
+      const tmp = new Date(order.date).toDateString();
+      return d <= tmp;
     });
 
   }

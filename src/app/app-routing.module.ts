@@ -16,20 +16,13 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'tab',
-    loadChildren: () => import('./pages/tab/tab.module').then( m => m.TabPageModule),
+    path: 'menu',
+    loadChildren: () => import('./pages/menu/menu.module').then( m => m.MenuPageModule),
     canLoad: [ AuthGuard ]
   },
   {
-    path: 'client',
-    component: ClientListPage,
-    // loadChildren: () => import('./pages/clients/client-list/client-list.module').then( m => m.ClientListPageModule),
-    canLoad: [ AuthGuard ]
-  },
-  {
-    path: 'article',
-    loadChildren: () => import('./pages/articles/articles.module').then(m => m.ArticlesPageModule),
-    canLoad: [AuthGuard]
+    path: 'article/:id',
+    loadChildren: () => import('./pages/articles/choos-article/choos-article.module').then(m => m.ChoosArticlePageModule)
   }
  
 ];
