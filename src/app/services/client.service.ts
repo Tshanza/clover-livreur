@@ -113,10 +113,15 @@ export class ClientService {
     }
 
     async createClient(client: Client): Promise<boolean>{
+        client.code = await this.getCodeStructure();
+        await this.updateId();
+
         client._id = client.code;
 
         return new Promise((resolve, reject) => {
             this.database.object('clients/' + client.code).set({...client})
+                .then(res => resolve(true))
+                .catch(error => resolve(false))
         });
 
         return new Promise((resolve, reject) => {

@@ -21,7 +21,7 @@ export class AutoSignGuard implements CanLoad {
     if(isAuth && (isAuth.value === 'true')){
       this.authService.isAuth = true;
       this.router.navigateByUrl('/menu', { replaceUrl: true});
-      this.authService.checkAuthStatus();
+      // this.authService.checkAuthStatus();
 
     }
 
