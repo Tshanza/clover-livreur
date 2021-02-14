@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, IonRouterOutlet, LoadingController, Platform } from '@ionic/angular';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
+import { Plugins } from '@capacitor/core';
+
+const { App } = Plugins;
 
 @Component({
   selector: 'app-menu',
@@ -24,13 +27,45 @@ export class MenuPage implements OnInit {
   constructor(private userService: UserService,
               private loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
-              private authService: AuthService) { 
+              private authService: AuthService,
+              private platform: Platform,
+              private routerOutlet: IonRouterOutlet) { 
 
     this.loadUserInfo();
+    // this.backButtonToExit();
+    this.platform.backButton.subscribeWithPriority(-1, () => {
+      if (!this.routerOutlet.canGoBack()) {
+        this.confirm();
+
+      }
+    });
 
   }
 
   ngOnInit() {
+  }
+
+  async confirm(){
+    const alert = await this.alertCtrl.create({
+      header: 'Attention !',
+      message: 'Voulez vous quitter l\'application ?',
+      buttons: [
+        {
+          text: 'QUITTER',
+          handler: () => {
+            App.exitApp();
+
+          }
+        },
+        {
+          text: 'ANNULER',
+          role: 'cancel'
+        }
+      ]
+    });
+
+    await alert.present();
+
   }
 
   async loadUserInfo(){

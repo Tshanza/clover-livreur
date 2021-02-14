@@ -34,7 +34,7 @@ export class SignInPage implements OnInit {
     
     this.authService.signIn(form.value)
       .then(() => {
-        this.router.navigateByUrl('/tab', { replaceUrl: true });
+        this.router.navigateByUrl('/menu', { replaceUrl: true });
         console.log('all things are right !');
         loading.dismiss();
 
