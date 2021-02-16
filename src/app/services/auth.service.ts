@@ -1,3 +1,4 @@
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Injectable } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { Router } from "@angular/router";
@@ -6,6 +7,7 @@ import { Plugins } from '@capacitor/core';
 import { AUTH_KEY } from "../guards/auto-sign.guard";
 
 export const USER_ID = "userID";
+export const USER_INFO = {};
 
 const { Storage } = Plugins;
 
@@ -18,7 +20,8 @@ export class AuthService {
 
     constructor(private auth: AngularFireAuth,
                 private router: Router,
-                private alertCtrl: AlertController){
+                private alertCtrl: AlertController,
+                private db: AngularFirestore){
 
         this.getUserId();
     }
@@ -27,7 +30,7 @@ export class AuthService {
     async getUserId(){
         const value = (await Storage.get({key: USER_ID})).value;
         this.userId = JSON.parse(value);
-        console.log('get user id', this.userId);
+        //console.log('get user id', this.userId);
 
     }
 
@@ -38,12 +41,12 @@ export class AuthService {
                     resolve(true);
                     this.isAuth = true;
                     Storage.set({key: AUTH_KEY, value: 'true'});
-                    console.log('User signed In !');
+                    //console.log('User signed In !');
                     Storage.set({key: USER_ID, value: ''})
 
                 })
                 .catch(error => {
-                    console.log('Error while sign in !', error);
+                    //console.log('Error while sign in !', error);
                     reject(error.message);
 
                 })
@@ -61,12 +64,12 @@ export class AuthService {
                     Storage.remove({key: USER_ID});
 
                     this.router.navigateByUrl('/');
-                    console.log('Signed Out successfuly !');
+                    //console.log('Signed Out successfuly !');
 
                 })
                 .catch(error => {
                     reject(error.message);
-                    console.log('Sign Out faild !');
+                    //console.log('Sign Out faild !');
 
                 })
 
@@ -87,12 +90,22 @@ export class AuthService {
 
         this.auth.onAuthStateChanged(async (user) => {
             if(user){
+                const res = await this.db.firestore.collection('users').doc(user.uid).get();
+                //console.log('get user info test');
+                USER_INFO['_id'] = res.id;
+                USER_INFO['userName'] = res.data().userName;
+                USER_INFO['name'] = res.data().name;
+                USER_INFO['depot'] = res.data().depot;
+                USER_INFO['phoneNumber'] = res.data().phoneNumber;
+                USER_INFO['password'] = res.data().password;
 
                 if(!(this.userId && this.userId.uid === user.uid)){
+                    
                     const uid = {
                         uid: user.uid,
                         userName: user.email,
                         name: user.displayName,
+                        depot: res.data()?.depot
                     }
     
                     Storage.set({key: USER_ID, value: JSON.stringify(uid)});

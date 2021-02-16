@@ -45,6 +45,11 @@ export class MenuPage implements OnInit {
   ngOnInit() {
   }
 
+  ionViewDidEnter(){
+    console.log('view');
+    
+  }
+
   async confirm(){
     const alert = await this.alertCtrl.create({
       header: 'Attention !',

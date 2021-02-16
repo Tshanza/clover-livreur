@@ -33,13 +33,13 @@ export class HomePage implements OnInit {
   }
 
   ionViewDidEnter(){
-    console.log('ion view did enter !');
+    //console.log('ion view did enter !');
     this.loadOrders();
     
   }
 
   ionViewDidLeave(){
-    console.log('ion view did leave !');
+    //console.log('ion view did leave !');
 
   }
 
@@ -66,14 +66,14 @@ export class HomePage implements OnInit {
     const date = (event.target as HTMLIonDatetimeElement).value;
     const d = new Date(date).toDateString();
 
-    console.log('date', d);
+    //console.log('date', d);
     
     const filteredData = this.orders.filter(order => {
       const tmp = new Date(order.date).toDateString();
       return d == tmp;
     });
 
-    console.log('filter', filteredData);
+    //console.log('filter', filteredData);
     //update display
     this.totalSale = await this.analyseService.totalSales(filteredData);
     this.saleByZone = await this.analyseService.salesByZone(filteredData);
@@ -107,16 +107,16 @@ export class HomePage implements OnInit {
           handler: () => {
             this.authService.signOut();
             this.auth.authState.subscribe(res => {
-              console.log('test auth state', res);
+              //console.log('test auth state', res);
 
             })
             this.auth.onAuthStateChanged(user => {
               if(user){
-                console.log('always loged in !');
+                //console.log('always loged in !');
                 
               }
 
-              console.log('on auth stat', user);
+              //console.log('on auth stat', user);
 
             })
           }

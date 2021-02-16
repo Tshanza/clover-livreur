@@ -8,19 +8,25 @@ import { User } from "../models/user.model";
 export class UserService {
 
     constructor(private auth: AngularFireAuth,
-                private db: AngularFirestore){}
+                private db: AngularFirestore){
+
+    }
 
     async getUserInfos(): Promise<User>{
         return new Promise((resolve, reject) => {
             this.auth.onAuthStateChanged(user => {
                 if(user){
+                    
                     this.db.firestore.collection('users').doc(user.uid).get()
                         .then(res => {
-                            resolve(new User(res.id, res.data()?.userName, res.data()?.name, res.data()?.phoneNumber, res.data()?.password));
+                            const user = {...res.data()}
+                            const ret = new User(res.id, user?.userName, user?.name, user?.depot, user?.phoneNumber, user?.password)
+                            //console.log('user getinfo', ret);
+                            resolve(ret);
 
                         })
                         .catch(error => {
-                            console.log('error ', error);
+                            //console.log('error ', error);
                             reject(error);
 
                         })

@@ -126,7 +126,7 @@ export class OrderDetailPage implements OnInit {
     const empty = this.order.articles.filter(article => article.qty > 0);
 
     const user = this.authService.userId;
-    const edit: Edition = {lastOrderId: this.order._id, name: user?.name, times: this.order.edition.times + 1, active: true};
+    const edit: Edition = {lastOrderId: this.order._id, name: this.order.user.name, times: this.order.edition.times + 1, active: true};
     const order: Order = {...this.order, edition: edit, articles: empty, date: Date.now()};
 
     const isCanceled = await this.orderService.cancelOrder(this.order);

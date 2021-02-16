@@ -1,3 +1,5 @@
+import { UserService } from 'src/app/services/user.service';
+import { MenuPage } from './../pages/menu/menu.page';
 import { Injectable } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { Article } from "../models/article.model";
@@ -6,14 +8,29 @@ import { Article } from "../models/article.model";
 
 export class ArticleService {
 
-    constructor(private db: AngularFirestore){}
+    depot: string = '';
+
+    constructor(private db: AngularFirestore,
+                private userService: UserService){
+
+    }
+
+    async getUser(){
+        const user = await this.userService.getUserInfos();
+        this.depot = user.depot;
+
+    }
 
     async getAricles(): Promise<Article[]>{
+        await this.getUser();
+        
+        //console.log('depot', this.depot);
+
         return new Promise((resolve, reject) => {
-            this.db.firestore.collection('articles').get()
+            this.db.firestore.collection('articles').where('depot', '==', this.depot).get()
                 .then(res => {
                     if(res.empty){
-                        console.log('empty collection, maybe network issue !');
+                        //console.log('empty collection, maybe network issue !');
                         resolve([]);
                         return;
                     } 
@@ -30,7 +47,7 @@ export class ArticleService {
 
                 })
                 .catch(error => {
-                    console.log('fail to load articles', error);
+                    //console.log('fail to load articles', error);
                     resolve([]);
                     
                 })

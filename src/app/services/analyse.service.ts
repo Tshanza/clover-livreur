@@ -28,7 +28,7 @@ export class AnalyseService {
 
         });
 
-        console.log('total sale', tmp);
+        //.log('total sale', tmp);
         return tmp;
         
     }
@@ -42,6 +42,7 @@ export class AnalyseService {
 
             list.forEach(order => {
                 const zone = order.client.zone;
+
                 const sale = order.articles.map(article => article.qty).reduce((t, i) => t + i, 0);
                 const index = tmp.findIndex(item => item?.zone === zone);
 
@@ -57,7 +58,7 @@ export class AnalyseService {
 
             })
 
-            console.log('sales by zone',tmp);
+            //.log('sales by zone',tmp);
             resolve(tmp.sort((a, b) => this.sortZone(a,b)));
 
         })
@@ -98,12 +99,11 @@ export class AnalyseService {
                 
             })
 
-            console.log('test tmp', test)
 
             // list.forEach(order => {
             //     order.articles.forEach(article => {
             //         const index = tmp.findIndex(item => item?.id == article.code);
-            //         console.log('index val', index);
+            //         //.log('index val', index);
 
             //         if(index > -1){
             //             const sale = tmp[index].sale + article.qty;
@@ -120,7 +120,7 @@ export class AnalyseService {
             //     })
             // })
 
-            // console.log('sales by product', tmp);
+            // //.log('sales by product', tmp);
             resolve(test.sort((a, b) => this.sortProduct(a,b)));
 
         })
