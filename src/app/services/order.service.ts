@@ -25,13 +25,13 @@ export class OrderService {
 
             })
                 .then(res => {
-                    console.log('Order placed !');
+                    //console.log('Order placed !');
                     resolve(true);
 
                 })
                 .catch(error => {
 
-                    console.log('Place order failed !', error);
+                    //console.log('Place order failed !', error);
                     resolve(false);
 
                 })
@@ -49,12 +49,12 @@ export class OrderService {
 
             })
                 .then(res => {
-                    console.log('Order edited !');
+                    //console.log('Order edited !');
                     resolve(true);
 
                 })
                 .catch(error => {
-                    console.log('update order failed !', error);
+                    //console.log('update order failed !', error);
                     resolve(false);
 
                 })
@@ -79,7 +79,7 @@ export class OrderService {
             this.db.firestore.collection('orders').where('user._id', '==', uid).get()
                 .then(res => {
                     if(res.empty){
-                        console.log('collection empty !!! Network issue');
+                        //console.log('collection empty !!! Network issue');
                         resolve([]);
                         return;
 
@@ -98,7 +98,7 @@ export class OrderService {
 
                 })
                 .catch(error => {
-                    console.log('failed to load Orders !!!');
+                    //console.log('failed to load Orders !!!');
                     reject(error);
 
                 })
@@ -115,12 +115,12 @@ export class OrderService {
             this.db.firestore.collection('orders').doc(order._id).update({edition: {...edit}})
                 .then(res => {
                     resolve(true);
-                    console.log('order disabled', res);
+                    //console.log('order disabled', res);
 
                 })
                 .catch(error => {
                     resolve(false);
-                    console.log('error on canceling order', error);
+                    //console.log('error on canceling order', error);
 
                 })
 
@@ -128,21 +128,23 @@ export class OrderService {
         
     }
 
-    async getChangeRate(): Promise<number>{
-        return new Promise((resolve, reject) => {
-            this.db.firestore.collection('configs').where('current', '==', true).get()
-                .then(res => {
-                    if(res.empty){
-                        resolve(1);
-                        return;
-                    }
+    async getChangeRate(depot: string): Promise<number>{
+        depot = depot.toLowerCase();
 
-                    res.forEach(r => {
-                        const result = r.data();
-                        console.log('res data', result?.changeRate);
-                        resolve(result?.changeRate);
-                    })
-                    // console.log('change rate', ret);
+        return new Promise((resolve, reject) => {
+            this.db.firestore.collection('configs').doc(depot).get()
+                .then(res => {
+                   const changeRate = res.data()['changeRate'];
+
+                   if(changeRate){
+                       resolve(changeRate);
+
+                   }else {
+                       resolve(1);
+
+                   }
+
+                   //console.log('change rate', changeRate);
 
                 })
                 .catch(error => {
@@ -163,6 +165,21 @@ export class OrderService {
         if(a.edition.active === b.edition.active) return 0;
         if(a.edition.active) return -1;
         if(!a.edition.active) return 1;
+    }
+
+    totalUSD(order: Order){
+        const currency = order.articles[0].currency;
+        //console.log('change rate', order.changeRate);
+
+        return currency === 'usd' ? order.total : order.total / order.changeRate;
+
+    }
+
+    totalCDF(order: Order){
+        const currency = order.articles[0].currency;
+        //console.log('change rate', order.changeRate);
+        return currency === 'cdf' ? order.total : order.total * order.changeRate;
+        
     }
 
 }

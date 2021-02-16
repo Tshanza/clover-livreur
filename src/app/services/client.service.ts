@@ -23,7 +23,7 @@ export class ClientService {
         const userDepot: string = user.depot;
         
         this.reference = userDepot.toLowerCase() === 'nyanza' ? 'clients' : userDepot.toLowerCase();
-        this.code = userDepot.toLowerCase() === 'kinshasa' ? 'kin' : 'code';
+        this.code = userDepot.toLowerCase() === 'kinshasa' ? 'kin' : 'id';
 
         //console.log('ref', this.reference);
     }

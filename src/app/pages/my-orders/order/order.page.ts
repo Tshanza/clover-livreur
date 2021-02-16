@@ -32,11 +32,10 @@ export class OrderPage implements OnInit {
               private loadingCtrl: LoadingController) { }
 
   async ngOnInit() {
-    this.onGetUser();
+    await this.onGetUser();
     console.log('client', this.client);
     console.log('articles', this.articles)
-    this.changeRate = await this.orderService.getChangeRate();
-
+    this.changeRate = await this.orderService.getChangeRate(this.user.depot);
 
   }
 

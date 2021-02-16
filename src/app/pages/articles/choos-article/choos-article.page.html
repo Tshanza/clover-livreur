@@ -1,58 +1,58 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
 
-    <ion-buttons slot="end">
-      <ion-button (click)="toggleSearchBar()">
-        <ion-icon name="search" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+        <ion-buttons slot="end">
+            <ion-button (click)="toggleSearchBar()">
+                <ion-icon name="search" slot="icon-only"></ion-icon>
+            </ion-button>
+        </ion-buttons>
 
-    <ion-title>List de produits</ion-title>
-  </ion-toolbar>
+        <ion-title>List de produits</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-  <div id="container" *ngIf="!dataSource.data.length">
-    <ion-spinner color="primary"></ion-spinner>
-    <!-- <ion-label>Patientez svp...  </ion-label> -->
-  </div>
-
-  <ion-list lines="full">
-
-    <div *ngFor="let category of categories">
-
-      <ion-list-header lines="full" color="medium">
-        <ion-label>
-          <h2 class="header">{{ category | uppercase }}</h2>
-        </ion-label>
-      </ion-list-header>
-  
-      <div *ngFor="let article of dataSource.filteredData">
-
-        <ion-item *ngIf="article.category === category">
-          <div class="image" [ngStyle]="{'background-image': 'url('+ article.imageUrl +')'}"></div>
-          
-          <ion-label>
-            <h2>{{ article.name }}</h2>
-            <p>detail : {{ article.unit }} x {{ article.format}} {{ article.rate }}</p>
-            <h3>Prix. {{ article.price }} Fc</h3>
-          </ion-label>
-          <ion-checkbox (ionChange)="onSelectArticle(article)" slot="end"></ion-checkbox>
-        </ion-item>
-
-      </div>
-
+    <div id="container" *ngIf="!dataSource.data.length">
+        <ion-spinner color="primary"></ion-spinner>
+        <!-- <ion-label>Patientez svp...  </ion-label> -->
     </div>
 
-  </ion-list>
+    <ion-list lines="full">
+
+        <div *ngFor="let category of categories">
+
+            <ion-list-header lines="full" color="medium">
+                <ion-label>
+                    <h2 class="header">{{ category | uppercase }}</h2>
+                </ion-label>
+            </ion-list-header>
+
+            <div *ngFor="let article of dataSource.filteredData">
+
+                <ion-item *ngIf="article.category === category">
+                    <div class="image" [ngStyle]="{'background-image': 'url('+ article.imageUrl +')'}"></div>
+
+                    <ion-label>
+                        <h2>{{ article.name }}</h2>
+                        <p>detail : {{ article.unit }} x {{ article.format}} {{ article.rate }}</p>
+                        <h3>Prix. {{ article.price }} {{ article.currency == 'usd' ? '$' : 'Fc' }}</h3>
+                    </ion-label>
+                    <ion-checkbox (ionChange)="onSelectArticle(article)" slot="end"></ion-checkbox>
+                </ion-item>
+
+            </div>
+
+        </div>
+
+    </ion-list>
 
 </ion-content>
 
 <ion-footer>
-  <ion-button *ngIf="orderList.length" expand="full" (click)="onValider()">Valider <em>({{ orderList.length }})</em></ion-button>
-  <ion-searchbar (ionChange)="applyFilter($event)" *ngIf="searchBar" (ionClear)="toggleSearchBar()" placeholder="trouver un client"></ion-searchbar>
+    <ion-button *ngIf="orderList.length" expand="full" (click)="onValider()">Valider <em>({{ orderList.length }})</em></ion-button>
+    <ion-searchbar (ionChange)="applyFilter($event)" *ngIf="searchBar" (ionClear)="toggleSearchBar()" placeholder="trouver un client"></ion-searchbar>
 </ion-footer>

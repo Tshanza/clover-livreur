@@ -19,7 +19,7 @@ export class MyOrdersPage implements OnInit {
   dataSource: MatTableDataSource<Order> = new MatTableDataSource(this.data);
   showSearchBar:boolean = false;
   canFilter: boolean = false;
-  changeRate: number = 0;
+  
   
   constructor(private orderService: OrderService,
               private loadingCtrl: LoadingController,
@@ -28,7 +28,7 @@ export class MyOrdersPage implements OnInit {
 
   async ngOnInit() {
     this.loadClients();
-    this.changeRate = await this.orderService.getChangeRate();
+    // this.changeRate = await this.orderService.getChangeRate();
 
   }
 
