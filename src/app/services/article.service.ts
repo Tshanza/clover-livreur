@@ -42,6 +42,7 @@ export class ArticleService {
                     })
 
                     //I can sort data
+                    
                     tmp.sort((a,b) => this.sortByName(a,b));
                     resolve(tmp.sort((a,b)=> this.sortByFormat(a,b)));
 

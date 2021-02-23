@@ -32,9 +32,16 @@ export class NewClientPage implements OnInit {
 
   async onCreateClient(form: NgForm){
     const loader = await this.loadingCtrl.create();
+
     const toast = await this.toastCtrl.create({
     message: 'client cree avec succes !',
     duration: 2500,
+    });
+
+    const error = await this.toastCtrl.create({
+      message: 'Une erreure s est produite, essayer plutard !',
+      duration: 3000,
+
     });
 
     await loader.present();
@@ -42,10 +49,17 @@ export class NewClientPage implements OnInit {
 
     const client = {...form.value, code: ""};
 
-    await this.clientService.createClient(client);
+    const status = await this.clientService.createClient(client);
     loader.dismiss();
-    await toast.present();
-    this.modalCtrl.dismiss(true);
+
+    if(status){
+      await toast.present();
+      this.modalCtrl.dismiss(true);
+    }else {
+      await error.present();
+      
+    }
+    
 
   }
 

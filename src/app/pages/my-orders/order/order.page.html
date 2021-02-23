@@ -12,6 +12,15 @@
 
 <ion-content>
 
+  <ion-item lines="full">
+    <ion-label>Mode de payement : {{ payement }} </ion-label>
+    <ion-toggle (ionChange)="toggle($event)"></ion-toggle>
+  </ion-item>
+  <ion-item lines="full">
+    <ion-label position="floating">Numero de Facture</ion-label>
+    <ion-input type="number" [(ngModel)]="facture" required></ion-input>
+  </ion-item>
+
   <div class="item-article" *ngFor="let article of articles; let index = index">
     <ion-card class="card-info">
       <ion-card-content>
@@ -19,7 +28,7 @@
         <ion-text>
           <h2>{{ article.name }}</h2>
           <p><strong>Pack :</strong> {{ article.format }} x {{ article.unit }}</p>
-          <p><strong>Prix :</strong> {{ article.price }} {{ article.currency }}</p>
+          <p><strong>Prix :</strong> {{ article.price }} {{ orderService.displayCurrency(article) }}</p>
         </ion-text>
 
         <ion-item>

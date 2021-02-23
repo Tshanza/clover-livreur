@@ -3,6 +3,7 @@ import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { Edition, Order } from "../models/order.model";
 import { AuthService } from "./auth.service";
+import { Article } from '../models/article.model';
 
 @Injectable()
 
@@ -95,6 +96,7 @@ export class OrderService {
                     tmp.sort((a,b) => this.sortByDate(a,b));
                     tmp.sort((a,b) => this.sortByEdition(a,b));
                     resolve(tmp);
+                    console.log('orders', tmp);
 
                 })
                 .catch(error => {
@@ -180,6 +182,10 @@ export class OrderService {
         //console.log('change rate', order.changeRate);
         return currency === 'cdf' ? order.total : order.total * order.changeRate;
         
+    }
+
+    displayCurrency(article: Article){
+        return article.currency === 'usd' ? '$' : 'Fc';
     }
 
 }

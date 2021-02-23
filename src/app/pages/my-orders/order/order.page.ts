@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, LoadingController, ModalController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { Article } from 'src/app/models/article.model';
 import { Client } from 'src/app/models/client.model';
 import { Order } from 'src/app/models/order.model';
@@ -22,14 +22,17 @@ export class OrderPage implements OnInit {
   dataValide: boolean = false;
   user: User;
   changeRate: number = 1;
+  payement: string = 'CASH'
+  facture: number = Date.now();
 
   @ViewChild('input') input: ElementRef<HTMLInputElement>;
 
   constructor(private modalCtrl: ModalController,
               private router: Router,
               private userService: UserService,
-              private orderService: OrderService,
-              private loadingCtrl: LoadingController) { }
+              public orderService: OrderService,
+              private loadingCtrl: LoadingController,
+              private toastCtrl: ToastController) { }
 
   async ngOnInit() {
     await this.onGetUser();
@@ -50,6 +53,21 @@ export class OrderPage implements OnInit {
 
   ionViewDidLeave(){
     
+  }
+
+  async toggle(event: Event){
+    const value = (event.target as HTMLIonToggleElement).value;
+    const p = this.payement;
+
+    if(p === 'CASH'){
+      this.payement = 'CREDIT';
+
+    }else {
+      this.payement = 'CASH';
+    }
+
+    console.log('payement', this.payement);
+
   }
 
   async onEvent(event: Event){
@@ -92,8 +110,14 @@ export class OrderPage implements OnInit {
 
   async onValider(){
     const loader = await this.loadingCtrl.create();
+    const error = await this.toastCtrl.create({
+      message: 'Livraison echouee, une erreure s\'est produite...',
+      duration: 3000,
+
+    });
+
     await loader.present();
-   
+
     let total = 0;
     this.articles.forEach(item => {
       total+= item.total;
@@ -107,7 +131,7 @@ export class OrderPage implements OnInit {
       active: true
     };
 
-    const order = new Order('',this.user, this.client, this.articles, Date.now(),this.changeRate,Date.now().toString(),"CASH",editInit, total);
+    const order = new Order('',this.user, this.client, this.articles, Date.now(),this.changeRate,this.facture.toString(),this.payement,editInit, total);
     console.log('order', order);
     
     const isDone = await this.orderService.createOrder(order);
@@ -119,7 +143,7 @@ export class OrderPage implements OnInit {
       
     }else {
       console.log('try again !');
-
+      await error.present();
     }
 
     // const modal = await this.modalCtrl.create({

@@ -43,8 +43,8 @@
 
             <ion-label>
                 <h2>{{ article.name }}</h2>
-                <p>{{ article.format }} {{ article.rate }} / <em>Prix :</em> {{ article.price }} Fc</p>
-                <p>Quantite : {{ article.qty }} ({{ article.total }} Fc)</p>
+                <p>{{ article.format }} {{ article.rate }} / <em>Prix :</em> {{ article.price }} {{ orderService.displayCurrency(article)}}</p>
+                <p>Quantite : {{ article.qty }} ({{ article.total }} {{ orderService.displayCurrency(article)}})</p>
             </ion-label>
 
         </ion-item>

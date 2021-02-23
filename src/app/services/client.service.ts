@@ -138,6 +138,8 @@ export class ClientService {
         client._id = client.code;
 
         return new Promise((resolve, reject) => {
+            if(!client.code) return resolve(false);
+
             this.database.object(this.reference + '/' + client.code).set({...client})
                 .then(res => resolve(true))
                 .catch(error => resolve(false))
